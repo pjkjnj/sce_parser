@@ -27,3 +27,5 @@ once_cell = "1.21"
 # enable getrandom wasm backend (wasm_js) only for wasm target
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 getrandom = { version = "0.3.3", features = ["wasm_js"] }
+[patch.crates-io]
+getrandom = { version = "0.3.3", features = ["js", "wasm_js"] }
