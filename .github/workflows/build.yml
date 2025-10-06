@@ -1,4 +1,4 @@
-name: Build WASM
+name: Build WASM Package
 
 on:
   push:
@@ -11,41 +11,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Install Rust and target
-        uses: actions-rs/toolchain@v1
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          target: wasm32-unknown-unknown
-          override: true
 
-      - name: Clean Cargo build cache
-        run: cargo clean
-
-      - name: Ensure getrandom version & update lockfile
-        run: |
-          # Обновим getrandom в lockfile до 0.3.3 (если Cargo.lock есть) и подгоним зависимости
-          cargo update -p getrandom --precise 0.3.3 || true
-          # опционально: удалим Cargo.lock, чтобы cargo заново разрешил зависимости (если хочешь)
-          # rm -f Cargo.lock
+      - name: Add wasm target
+        run: rustup target add wasm32-unknown-unknown
 
       - name: Install wasm-pack
         run: cargo install wasm-pack
-              - name: Clean Cargo build cache
+
+      - name: Clean Cargo build cache
         run: |
           cargo clean
           rm -f Cargo.lock
           cargo update
-          
 
-      - name: Build with wasm-pack
-        run: wasm-pack build --target web
+      - name: Build to WASM
+        run: wasm-pack build --target web --release
 
-      - name: Upload artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: wasm-artifacts
-          path: pkg/
+          name: sce_parser_wasm
+          path: pkg
           
