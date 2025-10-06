@@ -15,10 +15,9 @@ wasm-bindgen = "0.2.104"
 wasm-bindgen-futures = "0.4"
 
 # browser fetch / DOM
-web-sys = { version = "0.3", features = [
+web-sys = { version = "0.3.76", features = [
   "Window", "Response", "Request", "RequestInit", "RequestMode",
-  "Headers", "console", "DomException", "Url", "ReadableStream",
-  "Blob", "WindowOrWorkerGlobalScope", "Document"
+  "Headers", "console", "DomException", "Url", "Document"
 ] }
 js-sys = "0.3"
 
@@ -34,3 +33,4 @@ regex = { version = "1.10", default-features = false, features = ["std"] }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
+
