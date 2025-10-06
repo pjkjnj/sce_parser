@@ -24,6 +24,13 @@ jobs:
       - name: Clean Cargo build cache
         run: cargo clean
 
+      - name: Ensure getrandom version & update lockfile
+        run: |
+          # Обновим getrandom в lockfile до 0.3.3 (если Cargo.lock есть) и подгоним зависимости
+          cargo update -p getrandom --precise 0.3.3 || true
+          # опционально: удалим Cargo.lock, чтобы cargo заново разрешил зависимости (если хочешь)
+          # rm -f Cargo.lock
+
       - name: Install wasm-pack
         run: cargo install wasm-pack
 
