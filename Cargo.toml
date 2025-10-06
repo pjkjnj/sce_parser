@@ -1,37 +1,36 @@
 [package]
 name = "sce_parser"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2021"
-authors = ["you <you@example.com>"]
-description = "SCE parser for browser (WASM) - fetch + parse"
 license = "MIT"
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-# Важное исправление — принудительно включаем JS-бэкенд
-getrandom = { version = "0.2", features = ["js"] }
-
-# Основное окружение WebAssembly
 wasm-bindgen = "0.2.104"
 wasm-bindgen-futures = "0.4"
-js-sys = "0.3"
-web-sys = { version = "0.3.76", features = [
-  "Window", "Response", "Request", "RequestInit", "RequestMode", "Headers", "console"
+js-sys = "0.3.81"
+web-sys = { version = "0.3.81", features = [
+  "Window", "Response", "Request", "RequestInit", "RequestMode",
+  "Headers", "console"
 ] }
 
-# HTML и парсинг
-scraper = "0.18"
-
-# JSON
+# JSON, парсинг и утилиты
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-
-# Регулярки
 regex = "1.10"
+scraper = "0.18"
+
+# ✅ Правильная версия для WebAssembly
+getrandom = { version = "0.2.16", features = ["js"] }
+
+# Иногда rand тоже нужен для совместимости
+rand = { version = "0.8.5", default-features = false, features = ["std", "js"] }
+
+[patch.crates-io]
+# Переназначаем старую зависимость getrandom (0.3.3 → 0.2.16)
+getrandom = { version = "0.2.16", features = ["js"] }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
-
-
