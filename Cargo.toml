@@ -23,8 +23,7 @@ regex = { version = "1.10", default-features = false, features = ["std", "unicod
 # helper
 once_cell = "1.21"
 
-# NOTE:
-# getrandom is required by some transitive deps. Enable wasm feature only for wasm target below.
-# This avoids compile errors on wasm32 where getrandom needs wasm_js backend.
+# target-specific configuration for wasm32:
+# enable getrandom wasm backend (wasm_js) only for wasm target
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-getrandom = { version = "0.3", features = ["wasm_js"] }
+getrandom = { version = "0.3.3", features = ["wasm_js"] }
