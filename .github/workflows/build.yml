@@ -12,20 +12,23 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+          target: wasm32-unknown-unknown
+          override: true
 
-      - name: Add wasm target
-        run: rustup target add wasm32-unknown-unknown
+      - name: Clean and update deps
+        run: |
+          cargo clean
+          rm -f Cargo.lock
+          cargo update
 
       - name: Install wasm-pack
         run: cargo install wasm-pack
-
-      
 
       - name: Build to WASM
         run: wasm-pack build --target web --release
