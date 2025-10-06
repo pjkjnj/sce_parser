@@ -27,6 +27,10 @@ jobs:
           rm -f Cargo.lock
           cargo update
 
+      - name: Force update web-sys
+        run: cargo update -p web-sys
+        
+
       - name: Install wasm-pack
         run: cargo install wasm-pack
 
