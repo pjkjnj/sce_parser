@@ -25,11 +25,7 @@ jobs:
       - name: Install wasm-pack
         run: cargo install wasm-pack
 
-      - name: Clean Cargo build cache
-        run: |
-          cargo clean
-          rm -f Cargo.lock
-          cargo update
+      
 
       - name: Build to WASM
         run: wasm-pack build --target web --release
