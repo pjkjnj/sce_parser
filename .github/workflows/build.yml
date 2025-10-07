@@ -24,16 +24,18 @@ jobs:
         run: |
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-      - name: Force update getrandom
+      - name: Override getrandom dependency
         run: |
-          echo '[patch.crates-io]' >> Cargo.toml
-          echo 'getrandom = { version = "0.2.16", features = ["js"] }' >> Cargo.toml
+          echo '[dependencies.getrandom]' >> Cargo.toml
+          echo 'version = "0.2.16"' >> Cargo.toml
+          echo 'features = ["js"]' >> Cargo.toml
+          echo 'default-features = false' >> Cargo.toml
           cat Cargo.toml
 
-      - name: Clean old cache
+      - name: Clean cache
         run: cargo clean
 
-      - name: Build WebAssembly package
+      - name: Build WebAssembly
         run: wasm-pack build --target web --release
 
       - name: Upload build artifacts
