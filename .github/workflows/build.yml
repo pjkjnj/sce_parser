@@ -24,7 +24,13 @@ jobs:
         run: |
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-      - name: Clean cargo cache
+      - name: Force update getrandom
+        run: |
+          echo '[patch.crates-io]' >> Cargo.toml
+          echo 'getrandom = { version = "0.2.16", features = ["js"] }' >> Cargo.toml
+          cat Cargo.toml
+
+      - name: Clean old cache
         run: cargo clean
 
       - name: Build WebAssembly package
