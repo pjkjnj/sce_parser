@@ -24,13 +24,12 @@ jobs:
         run: |
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-      - name: Override getrandom dependency
+      - name: Ensure correct getrandom config
         run: |
-          echo '[dependencies.getrandom]' >> Cargo.toml
-          echo 'version = "0.2.16"' >> Cargo.toml
-          echo 'features = ["js"]' >> Cargo.toml
-          echo 'default-features = false' >> Cargo.toml
+          sed -i '/getrandom/d' Cargo.toml
+          echo 'getrandom = { version = "0.2.16", default-features = false, features = ["js"] }' >> Cargo.toml
           cat Cargo.toml
+
 
       - name: Clean cache
         run: cargo clean
