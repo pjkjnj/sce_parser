@@ -2,32 +2,14 @@
 name = "sce_parser"
 version = "0.3.3"
 edition = "2021"
-license = "MIT"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-# Основные зависимости
-wasm-bindgen = "0.2.104"
-wasm-bindgen-futures = "0.4"
-js-sys = "0.3.81"
-web-sys = { version = "0.3.81", features = [
-  "Window", "Response", "Request", "RequestInit", "RequestMode",
-  "Headers", "console"
-] }
-
-# Работа с JSON и HTML
+wasm-bindgen = "0.2"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-regex = "1.10"
-scraper = "0.18"
-
-# ✅ Исправленный getrandom (с поддержкой WebAssembly)
-getrandom = { version = "0.2.16", features = ["js"] }
-
-# ✅ Обычный rand без фич js (так правильно)
-rand = { version = "0.8.5", default-features = false, features = ["std"] }
-
-[dev-dependencies]
-wasm-bindgen-test = "0.3"
+js-sys = "0.3"
+rand = { version = "0.8.5", default-features = false, features = ["std_rng"] }
+getrandom = { version = "0.2.16", default-features = false, features = ["js"] }
