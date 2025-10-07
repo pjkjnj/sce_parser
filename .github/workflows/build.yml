@@ -1,45 +1,36 @@
-name: Build and Deploy WebAssembly
+name: Build WebAssembly
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: 📥 Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
+      - name: 🦀 Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+          override: true
 
-      - name: Add wasm target
-        run: rustup target add wasm32-unknown-unknown
-
-      - name: Install wasm-pack
+      - name: 🧰 Install wasm-pack
         run: |
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-      - name: Ensure correct getrandom config
-        run: |
-          sed -i '/getrandom/d' Cargo.toml
-          echo 'getrandom = { version = "0.2.16", default-features = false, features = ["js"] }' >> Cargo.toml
-          cat Cargo.toml
-
-
-      - name: Clean cache
+      - name: 🧹 Clean build cache
         run: cargo clean
 
-      - name: Build WebAssembly
+      - name: 📦 Build WebAssembly
         run: wasm-pack build --target web --release
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: wasm-build
-          path: pkg/
-          
+      - name: ✅ Verify build artifacts
+        run: ls -lah pkg/
+        
