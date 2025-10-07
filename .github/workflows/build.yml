@@ -1,10 +1,10 @@
-name: Build WASM Package
+name: Build and Deploy WebAssembly
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -12,34 +12,27 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: wasm32-unknown-unknown
-          override: true
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
 
-      - name: Clean and update deps
-        run: |
-          cargo clean
-          rm -f Cargo.lock
-          cargo update
-
-      - name: Force update web-sys
-        run: cargo update -p web-sys
-        
+      - name: Add wasm target
+        run: rustup target add wasm32-unknown-unknown
 
       - name: Install wasm-pack
-        run: cargo install wasm-pack
+        run: |
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-      - name: Build to WASM
+      - name: Clean cargo cache
+        run: cargo clean
+
+      - name: Build WebAssembly package
         run: wasm-pack build --target web --release
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: sce_parser_wasm
-          path: pkg
+          name: wasm-build
+          path: pkg/
           
