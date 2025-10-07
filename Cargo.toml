@@ -9,18 +9,24 @@ license = "MIT"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
+# --- WebAssembly bindings ---
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
 web-sys = { version = "0.3", features = ["Window", "Request", "RequestInit", "RequestMode", "Response"] }
 js-sys = "0.3"
 
+# --- Serialization ---
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
+# --- HTML parser ---
 scraper = "0.18"
 
-# ✅ Используем только эту версию getrandom
+# --- Random numbers (WebAssembly safe) ---
 getrandom = { version = "0.2.16", features = ["js"], default-features = false }
+rand = { version = "0.8.5", default-features = false, features = ["std", "js"] }
 
-# ✅ И рандом работает на основе неё
-rand = { version = "0.8.5", default-features = false,
+# --- Misc ---
+log = "0.4"
+cfg-if = "1.0"
+once_cell = "1.21"
